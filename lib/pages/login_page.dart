@@ -3,6 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../graphql/graphql_service.dart';
+import '../models/user.dart';
+
+String? token;
+User? user;
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -32,10 +36,15 @@ class LoginPageState extends State<LoginPage> {
     } else {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       await prefs.setString("token", result["token"]);
+      token = result["token"];
+      user = User.fromJson(result);
 
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => HomePage(userID: result['userID'], email: result['email'],)),
+        MaterialPageRoute(builder: (context) => HomePage(
+          // userID: result['userID'], email: result['email'],
+        )
+        ),
       );
     }
   }
